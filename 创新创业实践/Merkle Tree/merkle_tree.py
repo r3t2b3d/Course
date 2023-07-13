@@ -22,6 +22,13 @@ def verify(data):
         return True
     return False
 
+def exist_ver0(data, h, root):
+    for _ in range(len(h)):
+        data = sha256(data+h[_]).digest()
+    if data == root:
+        return True
+    return False
+
 
 def search_error(data):
     error_tree = build_tree(data)[0]
@@ -42,6 +49,10 @@ def test():
     db2[255] = b'hello'
     print(verify(db), verify(db2))
     print("error data idx: ", search_error(db2))
+    h = []
+    for _ in range(len(tree)-1):
+        h.append(tree[_][1])
+    print("The data {} exist is {}".format(db[0], exist_ver0(tree[0][0], h, root)))
 
 
 if __name__ == '__main__':
