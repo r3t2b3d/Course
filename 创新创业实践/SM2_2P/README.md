@@ -41,7 +41,7 @@ msg = b'test_msg'
 ver(sig, pk, msg, Z)
 ```
 
-![截屏2023-07-13 17.38.13](/Users/h45h_h45h/Desktop/截屏2023-07-13 17.38.13.png)
+![截屏2023-07-13 17.38.13](https://oyrd-1313391192.cos.ap-nanjing.myqcloud.com/images/%E6%88%AA%E5%B1%8F2023-07-13%2017.38.13.png)
 
 + Dec
 
