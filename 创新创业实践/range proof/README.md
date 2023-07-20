@@ -1,10 +1,17 @@
 # Range Proof With Hash Function
 
-### 介绍
+## 实验环境
+
++ Python 3.11.4
+
++ Apple M2 24G
++ SageMath version 10.0
+
+## 介绍
 
 范围证明是一种加密技术，允许一方向另一方证明一个秘密值在某个范围内，而不需透露实际值
 
-### 实验结果
+## 实验结果
 
 本项目在开源数学软件SageMath上进行实现，利用python库socket进行网络交互的实现，在交互过程中Alice为证明方， Bob为接收方，实验结果如下
 
