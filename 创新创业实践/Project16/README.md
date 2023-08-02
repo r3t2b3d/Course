@@ -1,0 +1,60 @@
+# SM2 two-party sign & decrypt
+
+## 实验环境
+
++ Python 3.11.4
+
++ Apple M2 24G
+
++ SageMath version 10.0
+
+## 实验内容
+
+本项目实现SM2的2P签名和2P解密方案，此类方案目的在于构建一个与用户共同完成签名的云端，以此来降低被攻击成功的可能，因为需要同时获取用户和云端的私钥才能完成签名或解密，该机制类似于多重签名，但是不同之处在于其用户和云端并不对等，云端主要体现一个辅助签名解密的作用
+
+### 实验结果
+
+本项目在开源数学软件SageMath上完成，利用socket实现与服务器的交互，完成2P签名及解密的过程
+
++ Sign
+
+左窗口为云端，右窗口为用户
+
+![image-20230713173530198](https://oyrd-1313391192.cos.ap-nanjing.myqcloud.com/images/image-20230713173530198.png)
+
+```python
+from hashlib import sha256
+
+p = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F
+a = 0x0000000000000000000000000000000000000000000000000000000000000000
+b = 0x0000000000000000000000000000000000000000000000000000000000000007
+Gx = 0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798
+Gy = 0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8
+ord_ = 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141
+
+F = GF(p)
+E = EllipticCurve(F, [a, b])
+G = E(Gx, Gy)
+
+
+def ver(sig, pk, msg, Z):
+    x = ZZ((sig[1]*G+sig[1]*pk+sig[0]*pk).xy()[0])
+    e = int(sha256(Z+msg).hexdigest(), 16)
+    if (x+e)%ord_ == sig[0]:
+        return True
+    return False
+
+sig = (76047483837838961199534186376111604103246736793452015108968569024881280740208, 49827584977766224864061691794756477786399024769613382423275390892956601777875)
+pk = E(107668199334165665885817148910499005541577328120661487325012944574176065229442, 111706569267090372625604124477898466836640842762568009247027727905605071391615)
+Z = b'Alice'
+msg = b'test_msg'
+ver(sig, pk, msg, Z)
+```
+
+![截屏2023-07-13 17.38.13](https://oyrd-1313391192.cos.ap-nanjing.myqcloud.com/images/%E6%88%AA%E5%B1%8F2023-07-13%2017.38.13.png)
+
++ Dec
+
+左窗口云端，右窗口用户
+
+![](https://oyrd-1313391192.cos.ap-nanjing.myqcloud.com/images/%E6%88%AA%E5%B1%8F2023-07-13%2017.41.43.png)
